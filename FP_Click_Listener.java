@@ -4,7 +4,7 @@ import javax.swing.JComponent;
 
 public class FP_Click_Listener extends MouseAdapter
 {
-   private FP_Component parent_component;
+   protected FP_Component parent_component;
    public FP_Click_Listener()
    {
    }
