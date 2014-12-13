@@ -1,8 +1,11 @@
 FP_Viewer.class : FP_Viewer.java FP_Frame.class 
 	javac FP_Viewer.java
 
-FP_Frame.class : FP_Frame.java FP_Component.class
+FP_Frame.class : FP_Frame.java FP_Component.class FP_Start_Layer_UI.class
 	javac FP_Frame.java
+
+FP_Start_Layer_UI.class : FP_Start_Layer_UI.java
+	javac FP_Start_Layer_UI.java
 
 FP_Component.class : FP_Component.java FP_Click_Listener.class FP_Panar.class
 	javac FP_Component.java
