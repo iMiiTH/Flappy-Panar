@@ -11,9 +11,12 @@ import java.awt.Color;
 
 public class FP_Component extends JComponent
 {
-   private Timer t;
+   private BufferedImage background;
+   private boolean playing;
+   private Timer frame_counter;
+   private Timer sequence_counter;
    private final int DELAY = 16;          //Timer delay in ms.
-   private JFrame parent_frame;     //The JFrame that owns this
+   private FP_Frame parent_frame;     //The JFrame that owns this
    private MouseAdapter m_adapter;
    private FP_Panar panar;
 
@@ -26,18 +29,32 @@ public class FP_Component extends JComponent
          }
       };
 
-      t = new Timer(DELAY, taskPerformer);
-      t.start();
+      frame_counter = new Timer(DELAY, taskPerformer);
 
+      m_adapter = new FP_Start_Click_Listener(this);
+      this.addMouseListener(m_adapter);
+      /*
       m_adapter = new FP_Click_Listener(this);
       this.addMouseListener(m_adapter);
+      */
 
-      panar = new FP_Panar();
+
+      playing = false;
+      panar = new FP_Panar(100, FP_Viewer.HEIGHT / 2 - FP_Panar.HEIGHT / 2 );
    }
-   public FP_Component(JFrame frame)
+   public FP_Component(FP_Frame frame)
    {
-      super();
+      this();
       parent_frame = frame;
+   }
+
+   public void startGame()
+   {
+      playing = true;
+      this.removeMouseListener(m_adapter);
+      m_adapter = new FP_Click_Listener(this);
+      this.addMouseListener(m_adapter);
+      frame_counter.start();
    }
 
    public void mouseClicked()
@@ -48,6 +65,11 @@ public class FP_Component extends JComponent
    public void moveObjects()
    {
       panar.move();
+   }
+
+   public boolean isPlaying()
+   {
+      return playing;
    }
 
    public void paintComponent(Graphics g)
