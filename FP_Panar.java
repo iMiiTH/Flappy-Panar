@@ -46,6 +46,7 @@ public class FP_Panar implements FP_Moving_Object
          face_of_the_all_knowing = face_of_the_all_knowing_op.filter(before, face_of_the_all_knowing);
       } catch(IOException e) {
          System.out.println("PANAR'S FACE IS MISSING WHAT ARE YOU DOING 0/10 BE HAPPY I DON'T REPORT YOU FOR PLAGARISM.");
+         System.out.println("Missing panar.jpg in the application folder.");
          System.exit(1);
       }
       face_of_the_all_knowing_op = null;
@@ -69,7 +70,7 @@ public class FP_Panar implements FP_Moving_Object
 
    public void draw(Graphics2D g2)
    {
-      g2.draw(bounding_box);
+      //g2.draw(bounding_box);
       g2.drawImage(face_of_the_all_knowing, face_of_the_all_knowing_op, (int)xPos, (int)yPos);
    }
 

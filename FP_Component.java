@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-
 public class FP_Component extends JComponent
 {
    private BufferedImage background;
