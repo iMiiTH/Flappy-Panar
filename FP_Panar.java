@@ -9,14 +9,18 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URISyntaxException;
 
 public class FP_Panar implements FP_Moving_Object
 {
 
    //since the game is updated every 60 seconds, we subtract 1/60 * the acceleration amount every time the move function is called
-   public static final float  GRAVITY = 9.8f;
+   public static final float  GRAVITY = 10.8f;
    public final int  TERMINAL_VELOCITY = 300;
-   public final int CLICK_VELOCITY = -6;
+   public final float RU_GUD = 50.0f;
+   public final float CLICK_VELOCITY = -7.7f;
    private final int MAX_Y;
    private float velocity;
 
@@ -35,7 +39,10 @@ public class FP_Panar implements FP_Moving_Object
       bounding_box = new Rectangle(0, 0, HEIGHT, WIDTH);
       velocity = CLICK_VELOCITY;
       try {
-         BufferedImage before = ImageIO.read(new File("panar.jpg"));
+         InputStream in = FP_Viewer.class.getClassLoader().getResourceAsStream("resources/panar.jpg");
+         System.out.println(in);
+
+         BufferedImage before = ImageIO.read(in);
 
          float xTransformation = (float)WIDTH/(float)before.getWidth();
          float yTransformation = (float)HEIGHT/(float)before.getHeight();
@@ -65,6 +72,7 @@ public class FP_Panar implements FP_Moving_Object
       velocity += (GRAVITY * 1/60);
       yPos += velocity;
       if(yPos > MAX_Y) velocity = CLICK_VELOCITY;
+      if(yPos < 0) velocity = RU_GUD;
       bounding_box.setLocation((int)xPos, (int)yPos);
    }
 
@@ -76,16 +84,28 @@ public class FP_Panar implements FP_Moving_Object
 
    public boolean intersects(FP_Moving_Object o)
    {
-      return bounding_box.intersects(o.get_bounding_box());
-   }
+      for(Rectangle2D r : o.get_bounding_box() ) {
+         if(bounding_box.intersects(r)) {
+            System.out.println("Oh shit you've done it now.");
+            return true;
+         }
+      }
+      return false;
+   } 
 
-   public Rectangle2D get_bounding_box()
+   public Rectangle2D[] get_bounding_box()
    {
-      return bounding_box;
+      return new Rectangle2D[] { bounding_box };
    }
    public void recieveClick()
    {
       System.out.println("Panar recieved click!1!1!1!");
       velocity = CLICK_VELOCITY;
+   }
+   public void deathMarch()
+   {
+      velocity += (GRAVITY * 1/60);
+      if(yPos < FP_Viewer.HEIGHT-HEIGHT)
+         yPos += velocity;
    }
 }
